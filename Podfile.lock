@@ -1,0 +1,16 @@
+PODS:
+  - NMapsMap (3.9.1)
+
+DEPENDENCIES:
+  - NMapsMap
+
+SPEC REPOS:
+  trunk:
+    - NMapsMap
+
+SPEC CHECKSUMS:
+  NMapsMap: 4ecd6f5e834dfa75e73084d93854ee97c9ed849d
+
+PODFILE CHECKSUM: 99028b1abd328a216a81406c4a8fde4e590bf45d
+
+COCOAPODS: 1.9.3
