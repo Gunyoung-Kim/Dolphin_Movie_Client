@@ -102,13 +102,12 @@ class BoxOfficeViewController: UITableViewController {
             
             self.callNaverMovieAPI(indexPath.row,rankType: .Daily)
           
-            DispatchQueue.main.async {
-                    if let _ =  self.dailyRankList[indexPath.row].imageUrl {
-                        cell.thumbnail.image = self.setThumbnailImage(indexPath.row,rankType: .Daily)
-                    }
+            if let _ =  self.dailyRankList[indexPath.row].imageUrl {
+                cell.thumbnail.image = self.setThumbnailImage(indexPath.row,rankType: .Daily)
             }
-            
+         
             return cell
+            
         } else {
             let row = self.weeklyRankList[indexPath.row]
             NSLog("제목: \(row.movieNm!), 호출된 행번호: \(indexPath.row)-CellForRowAtWeekly")
@@ -132,32 +131,37 @@ class BoxOfficeViewController: UITableViewController {
                     cell.rankInten?.textColor = .red
                 }
             }
+           
+            self.callNaverMovieAPI(indexPath.row,rankType: .Weekly)
             
-            
-            DispatchQueue.main.async {
-                self.callNaverMovieAPI(indexPath.row,rankType: .Weekly)
-                if let _ =  self.weeklyRankList[indexPath.row].imageUrl {
-                    cell.thumbnail.image = self.setThumbnailImage(indexPath.row,rankType: .Weekly)
-                }
+            if let _ =  self.weeklyRankList[indexPath.row].imageUrl {
+                cell.thumbnail.image = self.setThumbnailImage(indexPath.row,rankType: .Weekly)
             }
+           
             return cell
         }
     }
     
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let textHeader = UILabel(frame: CGRect(x:35, y: 5, width: 200,height: 30))
+        let textHeader = UILabel()
+        let v = UIView()
+        v.frame.origin = CGPoint(x: 0, y: 0)
         
-        textHeader.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight(rawValue: 2.5))
-        textHeader.textColor = UIColor(red: 0.03, green: 0.28, blue: 0.71, alpha: 1.0)
+        textHeader.font = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight(rawValue: 2.0))
+        textHeader.textColor = .systemBlue
         
         if section == 0 {
-            textHeader.text = "Daily Box_Office"
+            textHeader.text = "Daily"
+            textHeader.sizeToFit()
+            textHeader.frame.origin = CGPoint(x: self.view.frame.width / 2 - textHeader.frame.width / 2 , y: 20)
+            v.frame.size = CGSize(width: self.view.frame.width , height: 10)
         } else {
-            textHeader.text = "Weekly Box_Office"
+            textHeader.text = "Weekly "
+            textHeader.sizeToFit()
+            textHeader.center = CGPoint(x: self.view.frame.width / 2, y: 10)
+            v.frame.size = CGSize(width: self.view.frame.width, height: 20)
         }
-        
-        let v = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 30))
         
         v.addSubview(textHeader)
         
@@ -345,14 +349,6 @@ class BoxOfficeViewController: UITableViewController {
                 
                 NSLog("일간 \(index)번째 영화 네이버 호출 완료!-CallNAverAPiDaily")
                 Thread.sleep(forTimeInterval: 0.1)
-                /*
-                while(true) {
-                    if(session.state == .suspended) {
-                        session.resume()
-                        break
-                    }
-                }
- */
             }
         } else {
             if let _ = self.weeklyRankList[index].link, let _ = self.weeklyRankList[index].thumbnail {
