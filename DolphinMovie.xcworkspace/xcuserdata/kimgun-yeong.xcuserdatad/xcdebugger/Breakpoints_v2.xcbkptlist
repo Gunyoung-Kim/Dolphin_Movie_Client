@@ -3,4 +3,70 @@
    uuid = "72B9C65E-63A9-43AC-8520-796D98B5A991"
    type = "0"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "CBF87822-AAA9-4A4D-8E71-4F095385416A"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DolphinMovie/BoxOfficeViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "324"
+            endingLineNumber = "324"
+            landmarkName = "callNaverMovieAPI(_:rankType:cCell:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "CBF87822-AAA9-4A4D-8E71-4F095385416A - 9e5ef5ee9425c383"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in DolphinMovie.BoxOfficeViewController.callNaverMovieAPI(_: Swift.Int, rankType: DolphinMovie.BoxOfficeType, cCell: DolphinMovie.RankCell) -&gt; ()"
+                  moduleName = "DolphinMovie"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/kimgun-yeong/Desktop/Swift/DolphinMovie/DolphinMovie/BoxOfficeViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "324"
+                  endingLineNumber = "324"
+                  offsetFromSymbolStart = "4798">
+               </Location>
+               <Location
+                  uuid = "CBF87822-AAA9-4A4D-8E71-4F095385416A - 4db4752cc6cf00f4"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 (DolphinMovie.RankCell) -&gt; () in closure #2 (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in DolphinMovie.BoxOfficeViewController.callNaverMovieAPI(_: Swift.Int, rankType: DolphinMovie.BoxOfficeType, cCell: DolphinMovie.RankCell) -&gt; ()"
+                  moduleName = "DolphinMovie"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/kimgun-yeong/Desktop/Swift/DolphinMovie/DolphinMovie/BoxOfficeViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "325"
+                  endingLineNumber = "325"
+                  offsetFromSymbolStart = "130">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "2BA43DC2-2D93-46E8-A96E-8F3ACD9DA58F"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DolphinMovie/BoxOfficeViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "443"
+            endingLineNumber = "443"
+            landmarkName = "getThumbnailImage(_:rankType:cCell:completion:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

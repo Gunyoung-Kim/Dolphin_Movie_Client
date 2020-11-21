@@ -18,7 +18,7 @@ class MovieVO {
     var audiAcc: String?        // 누적 관객수
     
     var link: String?       //영화의 하이퍼텍스트 link
-    var imageUrl: String?       //영화 썸네일 url
+    var imageUrl: String? = "default"    //영화 썸네일 url
     
     var thumbnail: UIImage?
 }

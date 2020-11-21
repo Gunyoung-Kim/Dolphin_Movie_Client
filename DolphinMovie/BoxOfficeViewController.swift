@@ -100,11 +100,7 @@ class BoxOfficeViewController: UITableViewController {
                 }
             }
             
-            self.callNaverMovieAPI(indexPath.row,rankType: .Daily)
-          
-            if let _ =  self.dailyRankList[indexPath.row].imageUrl {
-                cell.thumbnail.image = self.setThumbnailImage(indexPath.row,rankType: .Daily)
-            }
+            self.callNaverMovieAPI(indexPath.row,rankType: .Daily,cCell: cell)
          
             return cell
             
@@ -132,12 +128,7 @@ class BoxOfficeViewController: UITableViewController {
                 }
             }
            
-            self.callNaverMovieAPI(indexPath.row,rankType: .Weekly)
-            
-            if let _ =  self.weeklyRankList[indexPath.row].imageUrl {
-                cell.thumbnail.image = self.setThumbnailImage(indexPath.row,rankType: .Weekly)
-            }
-           
+            self.callNaverMovieAPI(indexPath.row,rankType: .Weekly,cCell: cell)
             return cell
         }
     }
@@ -266,23 +257,13 @@ class BoxOfficeViewController: UITableViewController {
     
     func setThumbnailImage(_ index: Int,rankType: BoxOfficeType) -> UIImage {
         if(rankType == .Daily) {
-            if let tnail = self.dailyRankList[index].thumbnail {
-                return tnail
-            } else {
-                self.getThumbnailImage(index,rankType: .Daily)
-                return self.dailyRankList[index].thumbnail!
-            }
+            return self.dailyRankList[index].thumbnail!
         } else {
-            if let tnail = self.weeklyRankList[index].thumbnail {
-                return tnail
-            } else {
-                self.getThumbnailImage(index,rankType: .Weekly)
-                return self.weeklyRankList[index].thumbnail!
-            }
+           return self.weeklyRankList[index].thumbnail!
         }
     }
     
-    func callNaverMovieAPI(_ index: Int,rankType: BoxOfficeType) {
+    func callNaverMovieAPI(_ index: Int,rankType: BoxOfficeType,cCell: RankCell) {
         if(rankType == .Daily) {
             if let _ = self.dailyRankList[index].link, let _ = self.dailyRankList[index].thumbnail {
                 return
@@ -327,7 +308,9 @@ class BoxOfficeViewController: UITableViewController {
                         guard (items.count != 0) else {
                             self.dailyRankList[index].imageUrl = "default"
                             self.dailyRankList[index].link = "default"
-                            self.getThumbnailImage(index, rankType: .Daily)
+                            self.getThumbnailImage(index, rankType: .Daily, cCell: cCell) {
+                                $0.thumbnail.image = self.setThumbnailImage(index,rankType: .Daily)
+                            }
                             return
                         }
                         
@@ -338,13 +321,14 @@ class BoxOfficeViewController: UITableViewController {
                         self.dailyRankList[index].imageUrl = imageurl
                         self.dailyRankList[index].link = link_
                      
-                     
-                        self.getThumbnailImage(index,rankType: .Daily)
-                    
+                        self.getThumbnailImage(index,rankType: .Daily, cCell: cCell) {
+                            $0.thumbnail.image = self.setThumbnailImage(index,rankType: .Daily)
+                        }
                        
                     } catch {
                         NSLog("Parse Error!")
                     }
+                    
                 }.resume()
                 
                 NSLog("일간 \(index)번째 영화 네이버 호출 완료!-CallNAverAPiDaily")
@@ -399,7 +383,9 @@ class BoxOfficeViewController: UITableViewController {
                         guard (items.count != 0) else {
                             self.weeklyRankList[index].imageUrl = "default"
                             self.weeklyRankList[index].link = "default"
-                            self.getThumbnailImage(index, rankType: .Weekly)
+                            self.getThumbnailImage(index, rankType: .Weekly, cCell: cCell) {
+                                $0.thumbnail.image = self.setThumbnailImage(index,rankType: .Weekly)
+                            }
                             return
                         }
                         
@@ -410,30 +396,24 @@ class BoxOfficeViewController: UITableViewController {
                         
                         self.weeklyRankList[index].imageUrl = imageurl
                         self.weeklyRankList[index].link = link_
+                    
+                        self.getThumbnailImage(index, rankType: .Weekly,cCell: cCell) {
+                            $0.thumbnail.image = self.setThumbnailImage(index,rankType: .Weekly)
+                        }
                         
-                      
-                        self.getThumbnailImage(index, rankType: .Weekly)
-                       
-                    } catch {
+                        } catch {
                         NSLog("Parse Error!")
                     }
                 }.resume()
                
                 NSLog("월간 \(index)번째 영화 네이버 호출 완료!-CallNaverAPIWeekly")
                 Thread.sleep(forTimeInterval: 0.1)
-                /*
-                while(true) {
-                    if(session.state == .suspended) {
-                        session.resume()
-                        break
-                    }
-                }
- */
+                
             }
         }
     }
     
-    func getThumbnailImage(_ index: Int,rankType: BoxOfficeType){
+    func getThumbnailImage(_ index: Int,rankType: BoxOfficeType,cCell: RankCell,completion: @escaping ((RankCell)->Void)) {
         if(rankType == .Daily) {
             let mvo = self.dailyRankList[index]
             
@@ -450,9 +430,19 @@ class BoxOfficeViewController: UITableViewController {
                         return
                     }
                     let imageData = try! Data(contentsOf: url)
-                    mvo.thumbnail = UIImage(data: imageData)
+                    let image = UIImage(data: imageData)
+                    guard image != nil else {
+                        NSLog("\(rankType) \(index)번째 영화 썸네일 이미지 url은 존재하나 이미지가 유효하지 않음")
+                        mvo.thumbnail = UIImage(named: "default_thumbnail1")
+                        return
+                    }
+                    mvo.thumbnail = image
                 }
             }
+            DispatchQueue.main.async {
+                completion(cCell)
+            }
+            NSLog("\(mvo.imageUrl!)")
         } else {
             let mvo = self.weeklyRankList[index]
             
@@ -469,10 +459,22 @@ class BoxOfficeViewController: UITableViewController {
                         return
                     }
                     let imageData = try! Data(contentsOf: url)
-                    mvo.thumbnail = UIImage(data: imageData)
+                    let image = UIImage(data: imageData)
+                    guard image != nil else {
+                        NSLog("\(rankType) \(index)번째 영화 썸네일 이미지 url은 존재하나 이미지가 유효하지 않음")
+                        mvo.thumbnail = UIImage(named: "default_thumbnail1")
+                        return
+                    }
+                    mvo.thumbnail = image
                 }
             }
+            DispatchQueue.main.async {
+                completion(cCell)
+            }
+            NSLog("\(mvo.imageUrl!)")
         }
+        
+        
     }
 }
 
